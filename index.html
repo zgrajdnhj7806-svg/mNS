@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能欠款追踪系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 保持你的原有 CSS 代码 */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1><i class="fa fa-credit-card"></i> 智能欠款追踪系统</h1>
+            <p class="subtitle">高效管理您的债务与还款计划</p>
+        </header>
+
+        <!-- 仪表盘 -->
+        <div class="dashboard">
+            <div class="card">
+                <div class="debt-display">
+                    <div class="debt-amount">¥12,345</div>
+                    <div class="debt-label">当前欠款</div>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary">新增欠款</button>
+                    <button class="btn btn-success">还款记录</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="breakdown">
+                    <div class="breakdown-item">
+                        <span>总欠款</span>
+                        <span class="debt-increase">¥25,000</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>已还金额</span>
+                        <span class="payment-made">- ¥12,500</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史记录 -->
+        <div class="history">
+            <div class="history-title">
+                <i class="fa fa-history"></i> 最近操作记录
+            </div>
+            <div class="history-list">
+                <div class="history-item payment">
+                    <div class="history-date">2025-01-01</div>
+                    <div class="history-desc">支付宝还款</div>
+                    <div class="history-amount debt-increase">+ ¥5,000</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-date">2025-01-05</div>
+                    <div class="history-desc">新增信用卡欠款</div>
+                    <div class="history-amount debt-increase">+ ¥7,500</div>
+                </div>
+            </div>
+            <div class="no-history">暂无更多记录...</div>
+        </div>
+
+        <!-- 底部 -->
+        <footer>
+            &copy; 2025 智能欠款追踪系统
+        </footer>
+    </div>
+</body>
+</html>

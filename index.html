@@ -145,7 +145,7 @@
         
         <div class="debt-summary">
             <h2>当前总欠款</h2>
-            <div id="debtAmount" class="debt-amount negative">-400 元</div>
+            <div id="debtAmount" class="debt-amount negative">-600 元</div>
             <p>每月新增债务: -200 元</p>
         </div>
         
@@ -174,21 +174,19 @@
         
         <div class="explanation">
             <p><strong>使用说明：</strong></p>
-            <p>1. 初始债务为 -400 元（表示之前欠的400元）</p>
-            <p>2. 每月自动增加 -200 元债务</p>
-            <p>3. 在还款金额栏输入已还款数额，点击"添加还款"按钮</p>
-            <p>4. 系统会自动计算并更新当前总欠款</p>
-            <p>5. 所有数据将保存在您的浏览器中，刷新页面不会丢失</p>
+            <p>1. 债务从3个月前开始计算，每月增加 -200 元</p>
+            <p>2. 在还款金额栏输入已还款数额，点击"添加还款"按钮</p>
+            <p>3. 系统会自动计算并更新当前总欠款</p>
+            <p>4. 所有数据将保存在您的浏览器中，刷新页面不会丢失</p>
         </div>
     </div>
 
     <script>
         // 初始化债务数据
         let debtData = {
-            initialDebt: -400,
             monthlyDebt: -200,
             repayments: [],
-            months: 0
+            startDate: null
         };
         
         // 从本地存储加载数据
@@ -196,23 +194,26 @@
             const savedData = localStorage.getItem('debtTrackerData');
             if (savedData) {
                 debtData = JSON.parse(savedData);
-                updateMonthsBasedOnDate();
+            } else {
+                // 如果没有保存的数据，设置开始日期为3个月前
+                const today = new Date();
+                debtData.startDate = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate()).toISOString();
             }
             updateDisplay();
         }
         
-        // 根据日期计算经过的月份数
-        function updateMonthsBasedOnDate() {
-            if (debtData.repayments.length > 0) {
-                const firstRepaymentDate = new Date(debtData.repayments[0].date);
-                const today = new Date();
-                
-                // 计算月份差
-                const monthsDiff = (today.getFullYear() - firstRepaymentDate.getFullYear()) * 12 +
-                                  (today.getMonth() - firstRepaymentDate.getMonth());
-                
-                debtData.months = Math.max(debtData.months, monthsDiff);
-            }
+        // 计算从开始日期到现在的月份数
+        function calculateMonthsPassed() {
+            if (!debtData.startDate) return 0;
+            
+            const startDate = new Date(debtData.startDate);
+            const today = new Date();
+            
+            // 计算月份差
+            const monthsDiff = (today.getFullYear() - startDate.getFullYear()) * 12 +
+                              (today.getMonth() - startDate.getMonth());
+            
+            return Math.max(0, monthsDiff);
         }
         
         // 保存数据到本地存储
@@ -222,8 +223,10 @@
         
         // 计算当前债务
         function calculateCurrentDebt() {
-            // 初始债务 + 每月债务 * 月份数
-            const baseDebt = debtData.initialDebt + (debtData.monthlyDebt * debtData.months);
+            const monthsPassed = calculateMonthsPassed();
+            
+            // 每月债务 * 经过的月份数
+            const baseDebt = debtData.monthlyDebt * monthsPassed;
             
             // 减去所有还款
             const totalRepaid = debtData.repayments.reduce((sum, repayment) => sum + repayment.amount, 0);
@@ -250,7 +253,3 @@
             
             // 更新图表
             updateChart();
-            
-            // 保存数据
-            saveData();
-       
